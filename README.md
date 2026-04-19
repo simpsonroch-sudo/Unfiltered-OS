@@ -14,6 +14,7 @@ Unfiltered OS is a business operating system for creative entrepreneurs to manag
 1. Scaffold a simple React + Tailwind app shell with responsive navigation.
 2. Add Firebase Auth scaffolding (sign up, login, logout) and protected routes.
 3. Implement Firestore data services for users, bookings, and clients.
+4. Build MVP pages: Dashboard, Pricing Calculator, Bookings, Clients, Client Detail, Income, Tasks.
 4. Build MVP pages: Dashboard, Pricing Calculator, Bookings, Clients, Client Detail, Income.
 5. Apply polished, minimal UI styles and add clear empty states.
 
@@ -71,6 +72,7 @@ users (collection)
       │       ├── amountDue (number)
       │       ├── statusHistory (array)
       │       └── updatedAt
+      ├── bookings (subcollection)
       └── bookings (subcollection)
           └── {bookingId}
               ├── clientName
@@ -79,6 +81,15 @@ users (collection)
               ├── status
               ├── paymentStatus
               └── amountDue
+
+      └── tasks (subcollection)
+          └── {taskId}
+              ├── title
+              ├── description
+              ├── dueDate
+              ├── priority (low|medium|high)
+              ├── completed (boolean)
+              └── createdAt
 ```
 
 > Optional future extension: add `pricingEntries` subcollection for saved quote templates.
@@ -127,6 +138,7 @@ npm run build
 - Bookings CRUD + status filter
 - Client list + searchable records + client detail editing
 - Income tracking summary + payment statuses
+- Task manager (add/edit/delete/toggle complete/incomplete)
 - Responsive, polished UI and empty states
 
 ## Notes for Future Enhancements

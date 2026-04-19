@@ -9,6 +9,12 @@ import BookingsPage from './pages/BookingsPage';
 import ClientsPage from './pages/ClientsPage';
 import ClientDetailPage from './pages/ClientDetailPage';
 import IncomePage from './pages/IncomePage';
+import TasksPage from './pages/TasksPage';
+import {
+  addBooking,
+  addTask,
+  deleteBooking,
+  deleteTask,
 import {
   addBooking,
   deleteBooking,
@@ -16,6 +22,9 @@ import {
   getClient,
   subscribeToBookings,
   subscribeToClients,
+  subscribeToTasks,
+  updateBooking,
+  updateTask,
   updateBooking,
   upsertClient,
 } from './lib/firestoreService';
@@ -26,6 +35,7 @@ const routeTitles = {
   '/bookings': 'Bookings',
   '/clients': 'Clients',
   '/income': 'Income Tracker',
+  '/tasks': 'Tasks',
 };
 
 function ProtectedRoute({ children }) {
@@ -40,6 +50,7 @@ export default function App() {
   const location = useLocation();
   const [bookings, setBookings] = useState([]);
   const [clients, setClients] = useState([]);
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
     if (!user) return;
@@ -52,10 +63,12 @@ export default function App() {
 
     const unsubBookings = subscribeToBookings(user.uid, setBookings);
     const unsubClients = subscribeToClients(user.uid, setClients);
+    const unsubTasks = subscribeToTasks(user.uid, setTasks);
 
     return () => {
       unsubBookings();
       unsubClients();
+      unsubTasks();
     };
   }, [user]);
 
@@ -73,6 +86,7 @@ export default function App() {
           <ProtectedRoute>
             <Layout title={title}>
               <Routes>
+                <Route path="/" element={<DashboardPage bookings={bookings} tasks={tasks} />} />
                 <Route path="/" element={<DashboardPage bookings={bookings} />} />
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route
@@ -91,6 +105,18 @@ export default function App() {
                 <Route
                   path="/clients/:clientId"
                   element={<ClientDetailPage fetchClient={(id) => getClient(user.uid, id)} saveClient={(id, data) => upsertClient(user.uid, id, data)} />}
+                />
+                <Route
+                  path="/tasks"
+                  element={
+                    <TasksPage
+                      tasks={tasks}
+                      onAdd={(payload) => addTask(user.uid, payload)}
+                      onUpdate={(id, payload) => updateTask(user.uid, id, payload)}
+                      onDelete={(id) => deleteTask(user.uid, id)}
+                      onToggleComplete={(id, completed) => updateTask(user.uid, id, { completed })}
+                    />
+                  }
                 />
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>

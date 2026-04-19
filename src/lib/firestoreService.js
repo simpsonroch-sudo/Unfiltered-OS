@@ -58,3 +58,22 @@ export async function getClient(uid, id) {
   const snap = await getDoc(doc(db, 'users', uid, 'clients', id));
   return snap.exists() ? { id: snap.id, ...snap.data() } : null;
 }
+
+export function subscribeToTasks(uid, callback) {
+  const tasksQuery = query(userSubCollection(uid, 'tasks'), orderBy('createdAt', 'desc'));
+  return onSnapshot(tasksQuery, (snapshot) => {
+    callback(snapshot.docs.map((item) => ({ id: item.id, ...item.data() })));
+  });
+}
+
+export async function addTask(uid, payload) {
+  return addDoc(userSubCollection(uid, 'tasks'), payload);
+}
+
+export async function updateTask(uid, id, payload) {
+  return updateDoc(doc(db, 'users', uid, 'tasks', id), payload);
+}
+
+export async function deleteTask(uid, id) {
+  return deleteDoc(doc(db, 'users', uid, 'tasks', id));
+}
