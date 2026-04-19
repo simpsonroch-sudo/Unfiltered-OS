@@ -15,6 +15,9 @@ import {
   addTask,
   deleteBooking,
   deleteTask,
+import {
+  addBooking,
+  deleteBooking,
   ensureUserProfile,
   getClient,
   subscribeToBookings,
@@ -22,6 +25,7 @@ import {
   subscribeToTasks,
   updateBooking,
   updateTask,
+  updateBooking,
   upsertClient,
 } from './lib/firestoreService';
 
@@ -83,6 +87,7 @@ export default function App() {
             <Layout title={title}>
               <Routes>
                 <Route path="/" element={<DashboardPage bookings={bookings} tasks={tasks} />} />
+                <Route path="/" element={<DashboardPage bookings={bookings} />} />
                 <Route path="/pricing" element={<PricingPage />} />
                 <Route
                   path="/bookings"

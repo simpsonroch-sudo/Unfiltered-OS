@@ -8,6 +8,10 @@ export default function DashboardPage({ bookings, tasks }) {
   const currentMonth = now.getMonth();
   const currentYear = now.getFullYear();
   const today = new Date(new Date().toDateString());
+export default function DashboardPage({ bookings }) {
+  const now = new Date();
+  const currentMonth = now.getMonth();
+  const currentYear = now.getFullYear();
 
   const monthlyBookings = bookings.filter((item) => {
     const date = new Date(item.date);

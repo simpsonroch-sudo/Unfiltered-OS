@@ -1,5 +1,6 @@
 import { Link, NavLink } from 'react-router-dom';
 import { BriefcaseBusiness, Calculator, CalendarCheck2, CheckSquare, DollarSign, Home, Users } from 'lucide-react';
+import { BriefcaseBusiness, Calculator, CalendarCheck2, DollarSign, Home, Users } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const links = [
